@@ -35,23 +35,23 @@ public class Search {
         IndexReader indexReader = getSearch();
         IndexSearcher indexSearcher = new IndexSearcher(indexReader);
 
-        QueryParser queryParser = new QueryParser("fileName", new StandardAnalyzer());
-        Query parse = queryParser.parse("银行");
+        QueryParser queryParser = new QueryParser("contents", new StandardAnalyzer());
+        Query parse = queryParser.parse("网站");
 
         //Query parse = new TermQuery(new Term("contents", "body"));
 
-        TopDocs search = indexSearcher.search(parse, 100);
+        TopDocs search = indexSearcher.search(parse, 10);
+       // TopDocs search = indexSearcher.searchAfter(q.scoreDocs[9], parse, 10);
+
         ScoreDoc[] scoreDocs = search.scoreDocs;
         for (ScoreDoc s :
                 scoreDocs) {
             Document doc = indexSearcher.doc(s.doc);
-            System.out.println(doc.getField("filePath").stringValue() + "\t" + doc.getField("fileName").stringValue() + doc.getField("contents").stringValue());
+            System.out.println(doc.getField("filePath").stringValue() + "\t" + doc.getField("fileName").stringValue());
         }
 
         System.out.println(indexReader.maxDoc());
-        System.out.println(indexReader.numDocs());
-
-
+        System.out .println(indexReader.numDocs());
         indexReader.close();
     }
 
